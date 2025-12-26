@@ -28,6 +28,21 @@ app.get('/data-deletion', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/deletion.html'));
 });
 
+// POST endpoint for actual deletion request
+app.post('/data-deletion', (req, res) => {
+  const { phoneNumber } = req.body;
+
+  if (!phoneNumber) {
+    return res.status(400).send('Phone number is required');
+  }
+
+  // TODO: Remove user data from your database
+  // Example:
+  // db.collection('users').doc(phoneNumber).delete();
+
+  return res.status(200).send('Your data has been deleted.');
+});
+
 app.get('/terms', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/terms.html'));
 });
