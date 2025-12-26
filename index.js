@@ -54,19 +54,36 @@ import express from 'express';
 
 const app = express();
 app.use(express.json());
-
+app.use(express.static('public'));
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 let lastWhatsappMessage = null;
 // ======================
 // ROOT (optional check)
 // ======================
-app.get('/', (req, res) => {
-  res.send('Chowbot is running 🚀');
-});
+// app.get('/', (req, res) => {
+//   res.send('Chowbot is running 🚀');
+// });
 
 // ======================
 // GET – Webhook verify
 // ======================
+
+
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve('public/index.html'));
+});
+
+app.get('/privacy-policy', (req, res) => {
+  res.sendFile(path.resolve('public/privacy.html'));
+});
+
+app.get('/data-deletion', (req, res) => {
+  res.sendFile(path.resolve('public/deletion.html'));
+});
+
+app.get('/terms', (req, res) => {
+  res.sendFile(path.resolve('public/terms.html'));
+});
 app.get('/webhook', (req, res) => {
   const mode = req.query['hub.mode'];
   const token = req.query['hub.verify_token'];
