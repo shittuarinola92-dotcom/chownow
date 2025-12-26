@@ -55,12 +55,9 @@ app.get('/webhook', (req, res) => {
   const token = req.query['hub.verify_token'];
   const challenge = req.query['hub.challenge'];
 
-  console.log('VERIFY DEBUG →', { mode, token, challenge });
-
-  if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+  if (mode === 'subscribe' && token === process.env.VERIFY_TOKEN) {
     return res.status(200).send(challenge);
   }
-
   return res.sendStatus(403);
 });
 
@@ -68,20 +65,7 @@ app.get('/webhook', (req, res) => {
 // Webhook Messages (POST)
 // ======================
 app.post('/webhook', (req, res) => {
-  const entry = req.body.entry?.[0];
-  const changes = entry?.changes?.[0];
-  const messages = changes?.value?.messages;
-
-  if (messages) {
-    messages.forEach(msg => {
-      allMessages.push({
-        from: msg.from,
-        text: msg.text?.body,
-        timestamp: msg.timestamp
-      });
-    });
-  }
-
+  console.log('Incoming WhatsApp payload:', JSON.stringify(req.body, null, 2));
   res.sendStatus(200);
 });
 
